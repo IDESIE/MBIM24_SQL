@@ -1,3 +1,0 @@
-modelo relacional -- tablas / columnas y filas
-CSV
-SQL 
