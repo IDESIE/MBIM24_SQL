@@ -91,10 +91,15 @@ order by INSTALLATEDON desc;
 Listar los distintos GUIDs de los componentes del facility 1 ordenados ascendentemente por fecha de garantía.
 */
 
+
 /* 14
 Id, código de activo, GUID, número de serie y nombre de los componentes cuyo spaceid está entre 10 y 27 inclusive
 ordenados por id de espacio descendentemente.
 */
+select id,assetidentifier,externalidentifier,serialnumber,name
+from components
+where spaceid between 10 and 27
+order by spaceid desc;
 
 /* 15
 Id, código de activo, GUID, número de serie y nombre de los componentes del facility 1 
@@ -128,6 +133,11 @@ Nombre, código de activo, número de serie de los componentes
 que no tengan espacio del facility 1
 ordenados descendentemente por código de activo
 */
+select name,assetidentifier,serialnumber
+from components 
+where FACILITYID=1 and spaceid is null
+order by assetidentifier desc;
+
 
 /* 21
 Nombre, código de activo, número de serie de los componentes
