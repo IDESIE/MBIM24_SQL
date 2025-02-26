@@ -173,7 +173,7 @@ Lista de espacios que su segunda letra es una 's' donde floorid = 1
 */
 select name
 from spaces
-Where name like '_s%' and floorid = 1; 
+Where upper(name) like '_S%' and floorid = 1; 
 /* 24
 Lista de tipos de componente del facility 1 
 donde el nombre contiene el texto 'con'
@@ -190,12 +190,14 @@ pero como volumen una etiqueta que indique
 'BAJO' si es menor a 10, 'ALTO' si es mayor a 1000
 y 'MEDIO' si está entre medias
 */
-select name,
+select name nom1,
+    volume,
       case
-           when volume < 10 then 'low'
-           when volume > 1000 then 'high'
-           else 'medium'
-       end as volume_label
+           when volume < 10 then 'bajo'
+           when volume > 1000 then 'alto'
+           else 'medio'
+       end volume_label,
+       netarea areaNETA
 from spaces;
 /* 26
 Nombre, fecha de instalación, fecha de garantia
@@ -220,7 +222,7 @@ Lista de espacios que no son Aula del floorid = 1
 select name 
 from spaces  
 where floorid = 1
-  and name != 'Aula';
+  and lower(name)not like '%aula%';
 /* 29
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
 del facility 1
@@ -244,7 +246,7 @@ del facility 1
 */
 select distinct name
 from component_types 
-where faciityid = 1
-  and name like '%\_%' escape '\';
+where facilityid= 1
+  and name like '%$_%' escape '$';
 --
 ------------------------------------------------------------------------------------------------
