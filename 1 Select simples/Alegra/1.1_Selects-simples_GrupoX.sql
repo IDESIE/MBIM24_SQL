@@ -142,6 +142,9 @@ order  by assetidentifier desc;
 Nombre, código de activo, número de serie de los componentes
 que tengan número de serie del facility 1
 */
+select assetidentifier, serialnumber, name, facilityid, spaceid
+from components
+where facilityid=1 and serialnumber is not null;
 
 /* 22
 Nombre de los espacios que empiezan por la letra A donde floorid = 1
@@ -149,7 +152,10 @@ Nombre de los espacios que empiezan por la letra A donde floorid = 1
 
 /* 23
 Lista de espacios que su segunda letra es una 's' donde floorid = 1
-*/
+MAYUSCULAS FUNCION*/
+select name, floorid, upper(name)
+from spaces
+where upper(name) like '_S%' and floorid=1;
 
 /* 24
 Lista de tipos de componente del facility 1 
@@ -163,7 +169,16 @@ pero como volumen una etiqueta que indique
 'BAJO' si es menor a 10, 'ALTO' si es mayor a 1000
 y 'MEDIO' si está entre medias
 */
-
+select 
+    name, 
+    volume, 
+    case
+        when volume<10 then 'BAJO'
+        when volume>1000 then 'BAJO'
+        else 'MEDIO'
+    end LABELVOLUMEN,
+    netarea areaNETA
+from spaces;
 /* 26
 Nombre, fecha de instalación, fecha de garantia
 de los componentes del facility 1
@@ -174,11 +189,21 @@ que tienen fecha de garantia
 Lista de nombres de espacio que su id no es 4, 9, ni 19
 del floorid 1
 */
-
+select 
+    name, 
+    id,
+    floorid
+from spaces
+where floorid=1 
+    and id !=4 
+    and id !=9 
+    and id !=19;
 /* 28
 Lista de espacios que no son Aula del floorid = 1
 */
-
+select name, floorid
+from spaces
+where floorid=1 and lower(name) not like '%aula%';
 /* 29
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
 del facility 1
@@ -193,6 +218,9 @@ del facility 1
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
 */
-
+select 
+    name
+from component_types
+where facilityid=1 and name like '%u_%' escape 'u';
 --
 ------------------------------------------------------------------------------------------------

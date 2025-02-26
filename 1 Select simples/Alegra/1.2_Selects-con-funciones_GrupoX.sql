@@ -12,7 +12,12 @@ la palabra "de", el mes en minúscula en palabras, la palabra "de", el año en c
 finalizando con un punto. Luego la hora en formato 24h con minutos y segundos.
 Y de etiqueta del campo "Fecha actual".
 */
-
+select
+concat(
+    trim(to_char(sysdate, 'Day, dd "de" Month')),
+    to_char(sysdate, ' "de" yyyy. hh24:mm:ss')
+    )
+from component_types;
 /* 2
 Día en palabras de cuando se instalaron los componentes
 del facility 1
