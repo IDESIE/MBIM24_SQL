@@ -243,6 +243,13 @@ del facility 1
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
 */
+Select name
+from component_types
+where facilityid=1
+and lower(name) like '%$_%' escape '$';
+/* al decirle la funcion "escape" le dices a la maquina que el guion bajo NO es 
+un comodin, sino lo que busco. No necesariamente debe ser un $, puedo poner
+cualquier caracter*/
 
 --
 ------------------------------------------------------------------------------------------------
