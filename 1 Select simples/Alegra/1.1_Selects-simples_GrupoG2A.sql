@@ -122,11 +122,18 @@ Nombre, volumen, de los espacios
 cuyo volumen es mayor a 90 de floorid = 1
 ordenados por volumen descendentemente
 */
+select name,volume
+from spaces
+where volume >90 and floorid=1
+order by volume desc;
 
 /* 19
 Nombre, volumen de los espacios
 cuyo volumen es mayor a 6 y menor a 9 de la planta con id = 1
 */
+select name,volume
+from spaces
+where volume between 6 and 9 and id=1;
 
 /* 20
 Nombre, código de activo, número de serie de los componentes
@@ -138,19 +145,31 @@ from components
 where FACILITYID=1 and spaceid is null
 order by assetidentifier desc;
 
-
 /* 21
 Nombre, código de activo, número de serie de los componentes
 que tengan número de serie del facility 1
 */
+select name,assetidentifier,serialnumber
+from components 
+where FACILITYID=1 and serialnumber is not null;
+
 
 /* 22
 Nombre de los espacios que empiezan por la letra A donde floorid = 1
 */
+select name
+from spaces 
+where floorid=1 and name like 'A%';
 
 /* 23
 Lista de espacios que su segunda letra es una 's' donde floorid = 1
 */
+select name
+from spaces 
+where floorid=1 and name like '_s%';
+/*Aqui debemos cuidar mayusculas y minusculas de la "s", sino, podríamos usar
+la función upper: upper(name) like '_s%' --> asi ya si no sabes si estan en mayus
+o minus, ya agarras todo porque pasas todo a mayus con la funcion upper */
 
 /* 24
 Lista de tipos de componente del facility 1 
