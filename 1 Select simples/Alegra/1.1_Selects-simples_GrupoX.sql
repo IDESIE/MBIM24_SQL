@@ -134,7 +134,10 @@ Nombre, código de activo, número de serie de los componentes
 que no tengan espacio del facility 1
 ordenados descendentemente por código de activo
 */
-
+select assetidentifier, serialnumber, name, facilityid, spaceid
+from components
+where facilityid=1 and spaceid is null
+order  by assetidentifier desc;
 /* 21
 Nombre, código de activo, número de serie de los componentes
 que tengan número de serie del facility 1
