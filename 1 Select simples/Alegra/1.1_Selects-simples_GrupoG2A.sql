@@ -105,11 +105,19 @@ order by spaceid desc;
 Id, código de activo, GUID, número de serie y nombre de los componentes del facility 1 
 ordenados por código de activo descendentemente.
 */
+select id,assetidentifier,externalidentifier,serialnumber,name
+from components
+where facilityid=1
+order by assetidentifier desc;
 
 /* 16
 Códigos de activo de los componentes del espacio con id 21
 ordenados por código de activo descendentemente.
 */
+select assetidentifier
+from components
+where spaceid=21
+order by assetidentifier desc;
 
 /* 17
 Las distintas fechas de instalación de los componentes 
@@ -183,6 +191,16 @@ pero como volumen una etiqueta que indique
 'BAJO' si es menor a 10, 'ALTO' si es mayor a 1000
 y 'MEDIO' si está entre medias
 */
+Select name noml,
+volume,
+case 
+when volume < 10 then 'bajo'
+when volume > 1000 then 'alto'
+else 'medio'
+end LABELVOLUME,
+netarea
+from spaces;
+
 
 /* 26
 Nombre, fecha de instalación, fecha de garantia
@@ -194,10 +212,22 @@ que tienen fecha de garantia
 Lista de nombres de espacio que su id no es 4, 9, ni 19
 del floorid 1
 */
+Select name, id, floorid
+from spaces
+where floorid=1
+and id != 4
+and id != 9
+and id != 19;
 
 /* 28
 Lista de espacios que no son Aula del floorid = 1
 */
+Select name, floorid
+from spaces
+where floorid=1
+and lower(name) not like '%aula%';
+/*para prevenir que exista alguna palabra que antes de "aula"
+tenga otra palabra podriamos poner: name not like '%Aula%' */
 
 /* 29
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
