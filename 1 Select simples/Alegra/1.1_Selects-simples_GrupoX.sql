@@ -90,9 +90,9 @@ where facilityid = 1
 order  by warrantystarton asc;
 /* 14
 Id, código de activo, GUID, número de serie y nombre de los componentes cuyo spaceid está entre 10 y 27 inclusive
-ordenados por id de espacio descendentemente.
+ordenados por id de espacio descendentemente. PONER SPACE ID TB PARA VERLO AUNQUE NO LO PIDAN
 */
-select id, assetidentifier, externalidentifier, serialnumber, name
+select id, assetidentifier, externalidentifier, serialnumber, name, spaceid
 from components
 where spaceid <= 27 AND spaceid >= 10
 order  by spaceid desc;
