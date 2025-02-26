@@ -4,15 +4,15 @@
 /* 1
 Describir la tabla floors
 */
-
+desc floors;
 /* 2
 Describir la tabla spaces
 */
-
+DESC spaces
 /* 3
 Datos de la tabla components
 */
-
+SELECT * FROM components;
 /* 4
 Datos de la tabla component_types
 */
@@ -20,11 +20,11 @@ Datos de la tabla component_types
 /* 5
 Id, nombre de los facilities
 */
-
+SELECT id, name from facilities;
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
-
+SELECT name,elevation, facilityid from floors;
 /* 7
 Nombre, area bruta, volumen de los espacios
 */
@@ -32,13 +32,25 @@ Nombre, area bruta, volumen de los espacios
 /* 8
 Nombre, vida útil de los tipos de componentes del facility 1
 */
-
+SELECT  
+name,   
+expectedlife,  
+facilityid
+from component_types
+where facilityid = 1;
 /* 9
 Nombre de los espacios de la Planta 1 del facility 1
-*/
+*/SELECT  
+id, name
+from floors
+where facilityid = 1 and name = 'Planta +1';
 /*Previamente se consulta cuál es el floorid
 listando los */
-
+SELECT  
+id, name
+from floors
+where facilityid = 1
+and name like '%Planta%';
 /* 10
 Nombre, número de modelo del tipo de componente con id = 60
 */
@@ -46,15 +58,24 @@ Nombre, número de modelo del tipo de componente con id = 60
 /* 11
 Nombre y fecha de instalación de los componentes del espacio 60 ordenados descendentemente por la fecha de instalación
 */
-
+SELECT name, installatedon
+FROM components
+WHERE spaceid = 60
+ORDER BY installatedon DESC;
 /* 12
 Listar las distintas fechas de instalación de los componentes del facility 1 ordenados descendentemente.
 */
-
+SELECT DISTINCT installatedon
+FROM components
+WHERE facilityid = 1
+ORDER BY installatedon DESC;
 /* 13
 Listar los distintos GUIDs de los componentes del facility 1 ordenados ascendentemente por fecha de garantía.
 */
-
+SELECT  distinct installatedon
+from components
+where facilityid = 1
+order by installatedon desc;
 /* 14
 Id, código de activo, GUID, número de serie y nombre de los componentes cuyo spaceid está entre 10 y 27 inclusive
 ordenados por id de espacio descendentemente.
