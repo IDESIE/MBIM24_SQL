@@ -27,6 +27,9 @@ del facility 1
 De los espacios, obtener la suma de áreas, cuál es el mínimo, el máximo y la media de áreas
 del floorid 1. Redondeado a dos dígitos.
 */
+select count(netarea), sum(netarea), min(netarea), max(netarea), avg(netarea)
+from spaces
+where floorid =1;
 
 /* 4
 ¿Cuántos componentes tienen espacio? ¿Cuántos componentes hay?
