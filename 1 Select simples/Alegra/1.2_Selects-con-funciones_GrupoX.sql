@@ -27,7 +27,13 @@ del facility 1
 De los espacios, obtener la suma de áreas, cuál es el mínimo, el máximo y la media de áreas
 del floorid 1. Redondeado a dos dígitos.
 */
-
+select count(netarea),
+    sum(netarea),
+    min (netarea),
+    max(netarea),
+    round(avg(netarea),5)
+from spaces
+where floorid=1;
 /* 4
 ¿Cuántos componentes tienen espacio? ¿Cuántos componentes hay?
 En el facility 1. Ej.
@@ -35,7 +41,13 @@ ConEspacio  Componentes
 ----------------------------
 3500  4000
 */
-
+select count(id),
+    count(*),
+    count(distinct spaceid),
+    count(replacedon),
+    count(area)
+from components
+where facilityid=1;
 /* 5
 Mostrar tres medias que llamaremos:
 -Media a la media del área bruta
@@ -54,7 +66,13 @@ en el facility 1.
 Mostrar cuántos espacios tienen el texto 'Aula' en el nombre
 del facility 1.
 */
-
+select
+    count(name)
+from spaces
+where floorid in(
+    select id
+    from floors where facilityid=1)
+and lower(name)like '%aula%';
 /* 8
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
 del facility 1.
