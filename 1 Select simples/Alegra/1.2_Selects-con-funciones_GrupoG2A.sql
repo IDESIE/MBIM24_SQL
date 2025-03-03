@@ -27,7 +27,7 @@ del facility 1
 De los espacios, obtener la suma de áreas, cuál es el mínimo, el máximo y la media de áreas
 del floorid 1. Redondeado a dos dígitos.
 */
-select count(netarea), sum(netarea), min(netarea), max(netarea), avg(netarea)
+select count(netarea), sum(netarea), min(netarea), max(netarea), round(avg(netarea),2)
 from spaces
 where floorid =1;
 
@@ -38,6 +38,9 @@ ConEspacio  Componentes
 ----------------------------
 3500  4000
 */
+select count(id), count(*), count(spaceid)
+from components
+where facilityid =1;
 
 /* 5
 Mostrar tres medias que llamaremos:
@@ -52,6 +55,13 @@ Solo la parte entera, sin decimales ni redondeo.
 Cuántos componentes hay, cuántos tienen fecha inicio de garantia, cuántos tienen espacio, y en cuántos espacios hay componentes
 en el facility 1.
 */
+select id
+from floors
+where facilityid =1;
+
+select name
+from spaces
+where floorid in(1,2,3,4); /* el "in" sustituye a poner "or"*/
 
 /* 7
 Mostrar cuántos espacios tienen el texto 'Aula' en el nombre
@@ -62,6 +72,9 @@ del facility 1.
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
 del facility 1.
 */
+select round(count(warrantystarton)*100/count(*),2) PCTTienenGarantia
+from components
+where facilityid =1;
 
 /* 9
 Listar las cuatro primeras letras del nombre de los espacios sin repetir
@@ -110,6 +123,26 @@ Viernes  	468
 Sábado   	404
 Domingo  	431
 */
+select to_char(installatedon,'Day'),
+count(id)
+from components
+where facilityid =1
+group by to_char(installatedon,'Day'),
+to_char(installatedon,'d') /* debemos agrupar aquellos "select" que NO tienen función cuando tenemos 
+mínimo 1 select que SÍ tiene función */
+order by to_char(installatedon,'d');
+
+/*Aqui hacemos el mismo ejemplo pero diciendo que me arroje los mayores a 470,
+para esto se usa "having" después de agrupar ya que no puedo tenerlo en el "where" porque primero debo agrupar*/
+select to_char(installatedon,'Day'),
+count(id)
+from components
+where facilityid =1
+group by to_char(installatedon,'Day'),
+to_char(installatedon,'d')
+having count(id)>470
+order by to_char(installatedon,'d');
+
 
 /*13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
@@ -124,6 +157,10 @@ Pasi 4
 Cuántos componentes de instalaron un Jueves
 en el facilityid 1
 */
+select count(to_char(installatedon,'Day'))
+from components
+where facilityid =1
+and to_char(installatedon,'Day') like '%Jueves%';
 
 /*15
 Listar el id de planta concatenado con un guión
@@ -132,5 +169,23 @@ y seguido del nombre del espacio.
 el id del espacio debe tener una longitud de 3 caracteres
 Ej. 3-004-Nombre
 */
+
+
+/* Sacar name de facilities, floors and spaces */
+select facilities.name,
+floors.name,
+spaces.name
+from spaces, floors, facilities
+where floors.id = spaces.floorid and facilities.id = floors.facilityid; /*tenemos que relacionar las distintas tablas
+para que no se me multipliquen todos por todos*/
+
+/* Otra manera de escribirlo es usando "join" que sirve para relacionar las tablas*/
+select facilities.name,
+floors.name,
+spaces.name
+from floors
+join spaces on floors.id = spaces.floorid
+join facilities on facilities.id = floors.facilityid
+where facilities.id =1;
  
 ------------------------------------------------------------------------------------------------
