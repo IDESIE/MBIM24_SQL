@@ -75,9 +75,12 @@ where floorid in(
 and lower(name)like '%aula%';
 /* 8
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía
-del facility 1.
+del facility 1. EL PCTT ES EL TITULO DE LA COLUMNA
 */
-
+select
+    round(count(warrantystarton)*100/count(*),2) PCTT
+from components
+where facilityid=1;
 /* 9
 Listar las cuatro primeras letras del nombre de los espacios sin repetir
 de la planta 1. 
@@ -113,7 +116,7 @@ Año Componentes
 
 /* 12
 Nombre del día de instalación y número de componentes del facility 1.
-ordenado de lunes a domingo
+ordenado de lunes a domingo AGRUPO POR UN CAMPO QUE ES EL DIA DE LA SEMANA. UNO LLEVA FUNCION DE GRUPO Y OTRO QU ENO, HAY QUE AGRUPAR POR LOS CAMPOS QUE NO LLEVAN FUNCION DE GRUPO. LA D ES EL DIA DE LA SMEANA EN NUMERO DE 1 A 7 (DE LUNES A DOMINGO)
 Ejemplo:
 Día         Componentes
 -----------------------
@@ -125,7 +128,14 @@ Viernes  	468
 Sábado   	404
 Domingo  	431
 */
-
+ select
+    to_char(installatedon, 'Day'),
+    count(id)
+from components
+where facilityid=1
+group by to_char(installatedon, 'Day'),
+    to_char(installatedon, 'd')
+order by to_char(installatedon, 'd');
 /*13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
 del floorid 1 ordenados ascendentemente por el nombre.
@@ -139,7 +149,11 @@ Pasi 4
 Cuántos componentes de instalaron un Jueves
 en el facilityid 1
 */
-
+select
+    count(to_char(installatedon, 'Day'))
+from components
+where facilityid=1
+    and to_char(installatedon, 'Day') like '%Jueves%';
 /*15
 Listar el id de planta concatenado con un guión
 seguido del id de espacio concatenado con un guión

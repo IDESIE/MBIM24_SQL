@@ -8,9 +8,15 @@ además de la tabla floors el id, nombre y facilityid
 
 /*2
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
-pero sí están en la tabla de espacios.
+pero sí están en la tabla de espacios.LEFT JOIN SALEN TODOS LOS ESPACIOS INCLSO LOS QU ENO SE RELACIONAN CON COMPONENTES. LO OREDAN PARA VER TODOS LOS NULOS AL INCIO
 */ 
-
+select
+    spaces.id
+from spaces
+    left join components on components.spaceid=spaces.id
+where
+    components.spaceid is null
+order by 1 desc
 
 /*3
 Lista de id de tipos de componentes que no están en la tabla de componentes (typeid)
@@ -36,6 +42,13 @@ de los componentes con id 10000, 20000, 300000
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
 */
 
+select
+    spaces.name,
+    count(components.id)
+from spaces
+    left join components on components.spaceid=spaces.id
+group by spaces.name
+having count(components.id)=5
 
 /*7
 ¿Cuál es el id y assetidentifier de los componentes
