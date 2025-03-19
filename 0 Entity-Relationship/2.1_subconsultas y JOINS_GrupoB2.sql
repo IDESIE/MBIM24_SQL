@@ -23,10 +23,7 @@ where c.spaceid is null;
 lista de id de tipos de componentes que no están en la tabla de componentes (typeid)
 pero sí están en la tabla de component_types.
 */
-select ct.id as "component type id"
-from component_types ct
-left join components c on ct.id = c.typeid
-where c.typeid is null;
+
 
 /*4
 mostrar de la tabla floors los campos: name, id;
@@ -145,18 +142,7 @@ and lower(c.name) not in ('tuberia', 'muro', 'techo', 'suelo');
 /*15
 nombre, área bruta y volumen de los espacios con mayor área que la media de áreas del facility 1.
 */
-with mediaarea as (
-    select avg(grossarea) as "mediaarea"
-    from spaces s
-    join floors fl on s.floorid = fl.id
-    where fl.facilityid = 1
-)
-select s.name as "space name", s.grossarea, s.volume
-from spaces s
-join floors fl on s.floorid = fl.id
-where fl.facilityid = 1
-and s.grossarea > (select mediaarea from mediaarea);
-Las consultas están en minúsculas, pero los comentarios se han mantenido tal como los enviaste en mayúsculas.
+
 
 
 /*16
