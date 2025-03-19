@@ -214,12 +214,18 @@ ORDER BY id asc
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
 del facility 1
 */
-not null
+select name, warrantydurationparts
+from component_types
+where facilityid = 1
+    and warrantydurationparts is not null;
 /* 30
 Lista de los tipos de componentes que no tiene el coste de repuesto
 del facility 1
 */
-not or is null
+select name, replacementcost
+from component_types
+where facilityid = 1
+    and replacementcost is null;
 /* 31
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
