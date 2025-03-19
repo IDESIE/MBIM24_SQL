@@ -10,6 +10,12 @@ además de la tabla floors el id, nombre y facilityid
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
 pero sí están en la tabla de espacios.
 */ 
+select 
+spaces.id
+from 
+spaces left join components on components.spaceid = spaces.id
+where components.spaceid is null
+order by 1 desc;
 
 
 /*3
@@ -35,6 +41,13 @@ de los componentes con id 10000, 20000, 300000
 /*6
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
 */
+select 
+spaces.name,
+count(components.id)
+from 
+spaces left join components on components.spaceid = spaces.id
+group by spaces.name
+having count(components.id)=5;
 
 
 /*7
