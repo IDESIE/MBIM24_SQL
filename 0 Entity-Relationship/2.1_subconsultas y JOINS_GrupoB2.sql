@@ -160,9 +160,9 @@ Las consultas están en minúsculas, pero los comentarios se han mantenido tal c
 
 
 /*16
-nombre y fecha de instalación (yyyy-mm-dd) de los componentes del espacio con mayor área del facility 1
+Mostrar el nombre y la fecha de instalación (yyyy-mm-dd) de los componentes del espacio con mayor área del facility 1.
 */
-select c.name as "component name", to_char(c.installatedon, 'yyyy-mm-dd') as "installation date"
+select c.name as "nombre del componente", to_char(c.installatedon, 'yyyy-mm-dd') as "fecha de instalación"
 from components c
 join spaces s on c.spaceid = s.id
 join floors fl on s.floorid = fl.id
@@ -175,10 +175,9 @@ and s.grossarea = (
 order by c.installatedon;
 
 /*17
-nombre y código de activo de los componentes cuyo tipo de componente contenga la palabra 'mesa'
-del facility 1
+Mostrar el nombre y el código de activo de los componentes cuyo tipo de componente contenga la palabra 'mesa' del facility 1.
 */
-select c.name as "component name", c.assetidentifier
+select c.name as "nombre del componente", c.assetidentifier as "código de activo"
 from components c
 join spaces s on c.spaceid = s.id
 join floors fl on s.floorid = fl.id
@@ -187,10 +186,9 @@ where fl.facilityid = 1
 and lower(ct.name) like '%mesa%';
 
 /*18
-nombre del componente, espacio y planta de los componentes
-de los espacios que sean aula del facility 1
+Mostrar el nombre del componente, el espacio y la planta de los componentes de los espacios que sean aula del facility 1.
 */
-select c.name as "component name", s.name as "space name", fl.name as "floor name"
+select c.name as "nombre del componente", s.name as "nombre del espacio", fl.name as "nombre de la planta"
 from components c
 join spaces s on c.spaceid = s.id
 join floors fl on s.floorid = fl.id
@@ -198,10 +196,9 @@ where fl.facilityid = 1
 and lower(s.name) like '%aula%';
 
 /*19
-número de componentes y número de espacios por planta (nombre) del facility 1. 
-todas las plantas.
+Mostrar el número de componentes y el número de espacios por planta (nombre) del facility 1. Todas las plantas.
 */
-select fl.name as "floor name", count(c.id) as "component count", count(distinct s.id) as "space count"
+select fl.name as "nombre de la planta", count(c.id) as "número de componentes", count(distinct s.id) as "número de espacios"
 from floors fl
 join spaces s on fl.id = s.floorid
 join components c on s.id = c.spaceid
@@ -209,18 +206,10 @@ where fl.facilityid = 1
 group by fl.name;
 
 /*20
-número de componentes por tipo de componente en cada espacio
-de los componentes que sean mesas del facility 1
+Mostrar el número de componentes por tipo de componente en cada espacio de los componentes que sean mesas del facility 1, 
 ordenados de forma ascendente por el espacio y descendente por el número de componentes.
-ejemplo:
-componentes    tipo   espacio
---------------------------------
-12  mesa-cristal-redonda    aula 2
-23  mesa-4x-reclinable      aula 3
-1   mesa-profesor           aula 3
-21  mesa-cristal-redonda    aula 12
 */
-select count(c.id) as "component count", ct.name as "component type", s.name as "space name"
+select count(c.id) as "número de componentes", ct.name as "tipo de componente", s.name as "nombre del espacio"
 from components c
 join spaces s on c.spaceid = s.id
 join floors fl on s.floorid = fl.id
@@ -231,18 +220,9 @@ group by s.name, ct.name
 order by s.name asc, count(c.id) desc;
 
 /*21
-mostrar el nombre de las aulas y una etiqueta «sillas» que indique
-'bajo' si el número de sillas es menor a 6
-'alto' si el número de sillas es mayor a 15
-'medio' si está entre 6 y 15 inclusive
-del facility 1
-ordenado ascendentemente por el espacio
-ejemplo:
-espacio sillas
---------------
-aula 1  bajo
-aula 2  bajo
-aula 3  medio
+Mostrar el nombre de las aulas y una etiqueta «sillas» que indique 'bajo' si el número de sillas es menor a 6, 
+'alto' si el número de sillas es mayor a 15, 'medio' si está entre 6 y 15 inclusive, del facility 1. 
+Ordenado ascendentemente por el espacio.
 */
 select s.name ,
        case
@@ -260,42 +240,20 @@ group by s.name
 order by s.name asc;
 
 /*22
-tomando en cuenta los cuatro primeros caracteres del nombre de los espacios
-del facility 1
-listar los que se repiten e indicar el número.
-en orden descendente por el número de ocurrencias.
-ejemplo:
-espacio ocurrencias
-aula    18
-aseo    4
-hall    2
+Mostrar los espacios del facility 1 tomando en cuenta los cuatro primeros caracteres del nombre, 
+listar los que se repiten e indicar el número. En orden descendente por el número de ocurrencias.
 */
-select substring(s.name, 1, 4) as "space prefix", count(*) as "occurrences"
-from spaces s
-join floors fl on s.floorid = fl.id
-where fl.facilityid = 1
-group by substring(s.name, 1, 4)
-having count(*) > 1
-order by count(*) desc;
+
 
 /*23
-nombre y área del espacio que mayor área bruta tiene del facility 1.
+Mostrar el nombre y área del espacio que tiene la mayor área bruta del facility 1.
 */
-select s.name , s.grossarea
-from spaces s
-join floors fl on s.floorid = fl.id
-where fl.facilityid = 1
-and s.grossarea = (
-    select max(grossarea)
-    from spaces
-    where floorid = s.floorid
-);
+
 
 /*24
-número de componentes instalados entre el 1 de mayo de 2010 y 31 de agosto de 2010
-y que sean grifos, lavabos del facility 1
+Mostrar el número de componentes instalados entre el 1 de mayo de 2010 y el 31 de agosto de 2010 y que sean grifos o lavabos del facility 1.
 */
-select count(c.id) as "component count"
+select count(c.id) as "número de componentes"
     from components c
             join spaces s on c.spaceid = s.id
             join floors fl on s.floorid = fl.id
@@ -306,23 +264,17 @@ select count(c.id) as "component count"
             and to_date('2010-08-31', 'yyyy-mm-dd');
 
 /*25
-un listado en el que se indique en líneas separadas
-una etiqueta que describa el valor, y el valor:
-el número de componentes en aula 03 del facility 1, 
-el número de sillas en aula 03 del facility 1
-el número de mesas o escritorios en aula 03 del facility 1
-ejemplo:
-componentes 70
-sillas 16
-mesas 3
+Mostrar un listado con etiquetas que describan el valor y el valor de los siguientes: 
+el número de componentes en aula 03 del facility 1, el número de sillas en aula 03 del facility 1 
+y el número de mesas o escritorios en aula 03 del facility 1.
 */
-select 'componentes' as "label", count(c.id) as "count"
+select 'componentes' as "etiqueta", count(c.id) as "número"
 from components c
 join spaces s on c.spaceid = s.id
 where lower(s.name) = 'aula 03'
 and s.floorid in (select id from floors where facilityid = 1)
 union
-select 'sillas' as "label", count(c.id) as "count"
+select 'sillas' as "etiqueta", count(c.id) as "número"
 from components c
 join spaces s on c.spaceid = s.id
 join component_types ct on c.typeid = ct.id
@@ -330,7 +282,7 @@ where lower(s.name) = 'aula 03'
 and lower(ct.name) like '%silla%'
 and s.floorid in (select id from floors where facilityid = 1)
 union
-select 'mesas' as "label", count(c.id) as "count"
+select 'mesas' as "etiqueta", count(c.id) as "número"
 from components c
 join spaces s on c.spaceid = s.id
 join component_types ct on c.typeid = ct.id
@@ -339,9 +291,9 @@ and lower(ct.name) like '%mesa%'
 and s.floorid in (select id from floors where facilityid = 1);
 
 /*26
-nombre del espacio, y número de grifos del espacio con más grifos del facility 1.
+Mostrar el nombre del espacio y el número de grifos del espacio con más grifos del facility 1.
 */
-select s.name as "space name", count(c.id) as "grifo count"
+select s.name as "nombre del espacio", count(c.id) as "número de grifos"
 from components c
 join spaces s on c.spaceid = s.id
 join floors fl on s.floorid = fl.id
@@ -353,48 +305,22 @@ order by count(c.id) desc
 limit 1;
 
 /*27
-¿cuál es el mes en el que más componentes se instalaron del facility 1.
+Mostrar el mes en el que más componentes se instalaron del facility 1.
 */
-select to_char(c.installatedon, 'yyyy-mm') as "month", count(c.id) as "component count"
-from components c
-join spaces s on c.spaceid = s.id
-join floors fl on s.floorid = fl.id
-where fl.facilityid = 1
-group by to_char(c.installatedon, 'yyyy-mm')
-order by count(c.id) desc
-limit 1;
+
 
 /*28
-nombre del día en el que más componentes se instalaron del facility 1.
-ejemplo: jueves
+Mostrar el nombre del día en el que más componentes se instalaron del facility 1.
+Ejemplo: jueves.
 */
-select to_char(c.installatedon, 'day') as "day of week", count(c.id) as "component count"
-from components c
-join spaces s on c.spaceid = s.id
-join floors fl on s.floorid = fl.id
-where fl.facilityid = 1
-group by to_char(c.installatedon, 'day')
-order by count(c.id) desc
-limit 1;
+
 
 /*29
-listar los nombres de componentes que están fuera de garantía del facility 1.
+Mostrar los nombres de los componentes que están fuera de garantía del facility 1.
 */
-select c.name as "component name"
-from components c
-join spaces s on c.spaceid = s.id
-join floors fl on s.floorid = fl.id
-where fl.facilityid = 1
-and c.warrantyend < current_date;
+
 
 /*30
-listar el nombre de los tres espacios con mayor área del facility 1
+Mostrar el nombre de los tres espacios con mayor área del facility 1.
 */
-select s.name as "space name", s.grossarea
-from spaces s
-join floors fl on s.floorid = fl.id
-where fl.facilityid = 1
-order by s.grossarea desc
-limit 3;
-
------------------------------------------------------------------------------------------------
+s
