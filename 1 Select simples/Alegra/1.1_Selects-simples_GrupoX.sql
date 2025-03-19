@@ -161,6 +161,15 @@ pero como volumen una etiqueta que indique
 y 'MEDIO' si está entre medias
 */
 
+select
+    name, volume, 
+    case
+        when volume <10 then 'BAJO'
+        when volume >1000 then 'ALTO'
+        else 'MEDIO'
+    end vol, netarea
+from spaces
+
 /* 26
 Nombre, fecha de instalación, fecha de garantia
 de los componentes del facility 1
@@ -172,9 +181,23 @@ Lista de nombres de espacio que su id no es 4, 9, ni 19
 del floorid 1
 */
 
+select
+    name, id, floorid
+from spaces
+where floorid = 1
+    and id != 9
+    and id != 4
+    and id != 19
+
 /* 28
 Lista de espacios que no son Aula del floorid = 1
 */
+
+select
+    name, id, floorid
+from spaces
+where floorid = 1
+and lower(name) not like '%aula%'
 
 /* 29
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
@@ -190,6 +213,12 @@ del facility 1
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
 */
+
+select
+    name
+from component_types
+where facilityid = 1
+and name like '%$_%' escape '$'
 
 --
 ------------------------------------------------------------------------------------------------

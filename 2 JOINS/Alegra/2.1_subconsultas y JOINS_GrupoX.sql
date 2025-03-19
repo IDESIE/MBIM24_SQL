@@ -42,6 +42,22 @@ de los componentes con id 10000, 20000, 300000
 que están en el espacio llamado CAJERO?
 */
 
+select
+    name, id, assetidentifier, spaceid
+from components
+where spaceid = 91;
+
+select
+id
+from spaces
+where name like 'CAJERO';
+
+select
+    components.id, assetidentifier, spaces.id
+from components
+join spaces on components.spaceid = spaces.id
+where upper(spaces.name) = 'CAJERO'
+order by 1 asc;
 
 /*8
 ¿Cuántos componentes
