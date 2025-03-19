@@ -40,13 +40,26 @@ de los componentes con id 10000, 20000, 300000
 /*7
 ¿Cuál es el id y assetidentifier de los componentes
 que están en el espacio llamado CAJERO?
-*/
+*/select
+    c.id,
+    c.assetidentifier
+from
+    components c
+    inner join spaces s on c.spaceid = s.id
+where
+    s.name = 'CAJERO';
 
 
 /*8
 ¿Cuántos componentes
 hay en el espacio llamado CAJERO?
-*/
+*/select
+    count(*) as total_componentes
+from
+    components c
+    inner join spaces s on c.spaceid = s.id
+where
+    s.name = 'CAJERO';
 
 
 /*9
