@@ -55,7 +55,11 @@ y de la tabla components: spaceid, id, assetidentifier
 de los componentes con id 10000, 20000, 30000
 aunque no tengan datos de espacio.
 */
-
+left join spaces on components.spaceid = spaces.id
+    where components.id = 10000
+    where components.id = 20000
+    where components.id = 30000
+order by 1 asc;
 
 /*
 10

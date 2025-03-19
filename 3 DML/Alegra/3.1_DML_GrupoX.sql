@@ -1,6 +1,6 @@
-------------------------------------------------------------------------------------------------
+ ------------------------------------------------------------------------------------------------
 -- DML
-------------------------------------------------------------------------------------------------
+ ------------------------------------------------------------------------------------------------
 /* 1
 Insertar un componente en el facility 1 
 con nombre «Grifo | Grifo | 030303» 
@@ -15,12 +15,14 @@ id de tipo «78»
 guid «666000»
 */
 
+
 /*
 Comprobar que se ven los datos insertados de forma conjunta con una JOIN
 y no de forma independiente. Con el fin de comprobar las relaciones.
 Mostrar todos los datos indicados en el punto anterior 
 y además el nombre del espacio, nombre de la planta, nombre del tipo de componente
 */
+
 
 /* 2
 Eliminar el componente creado.
@@ -31,10 +33,12 @@ Colocar como código de barras los 6 últimos caracteres del GUID
 a todo componente de la planta 1 y 2 del facility 1.
 */
 
+
 /* 4
 Modificar la fecha de garantia para que sea igual a la fecha de instalación
 para todo componente que sea un grifo o lavabo del facility 1.
 */
+
 
 /* 5
 Anonimizar los datos personales: nombre, apellido, email, teléfono de los contactos
