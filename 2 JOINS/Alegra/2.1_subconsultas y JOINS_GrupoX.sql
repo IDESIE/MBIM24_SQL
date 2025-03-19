@@ -55,13 +55,29 @@ having count(components.id)=5
 que están en el espacio llamado CAJERO?
 */
 
+select
+    components.id,
+    components.assetidentifier,
+    components.spaceid, 
+    spaces.name
+   
+from components
+    join spaces on components.spaceid=spaces.id
+where upper(spaces.name) like 'CAJERO'
+
+order by 1 asc;
 
 /*8
 ¿Cuántos componentes
 hay en el espacio llamado CAJERO?
 */
 
-
+select
+    count(components.id)
+   
+from components
+    join spaces on components.spaceid=spaces.id
+where spaces.name like 'CAJERO';
 /*9
 Mostrar de la tabla spaces: name, id;
 y de la tabla components: spaceid, id, assetidentifier
@@ -69,6 +85,16 @@ de los componentes con id 10000, 20000, 30000
 aunque no tengan datos de espacio.
 */
 
+select
+    spaces.name,
+    spaces.id,
+    components.spaceid, 
+    components.id,
+    components.assetidentifier
+   
+from spaces
+    join spaces on components.spaceid=spaces.id
+where components.id=10000 or components.id=20000 orcomponents.id=30000;
 
 /*
 10
