@@ -93,8 +93,8 @@ select
     components.assetidentifier
    
 from spaces
-    join spaces on components.spaceid=spaces.id
-where components.id=10000 or components.id=20000 orcomponents.id=30000;
+    right join components on components.spaceid=spaces.id
+where components.id=10000 or components.id=20000 or components.id=30000;
 
 /*
 10
@@ -107,7 +107,13 @@ Listar el nombre de los espacios y su área del facility 1
 Mostrar nombre del facility y el número de componentes.
 */
 
-
+select
+    facilities.name,
+    count(components.id)
+    
+from components
+   right join facilities on components.facilityid=facilities.id
+group by facilities.name;
 /*12
 ¿Cuál es la suma de áreas de los espacios por cada facility?
 Mostrar nombre del facility y la suma de las áreas 
