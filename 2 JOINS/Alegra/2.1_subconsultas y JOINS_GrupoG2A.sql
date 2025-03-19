@@ -54,6 +54,11 @@ having count(components.id)=5;
 ¿Cuál es el id y assetidentifier de los componentes
 que están en el espacio llamado CAJERO?
 */
+select 
+components.id, assetidentifier
+from 
+components join spaces on components.spaceid = spaces.id
+where upper(spaces.name) = 'CAJERO';
 
 
 /*8
