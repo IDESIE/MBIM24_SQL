@@ -123,9 +123,6 @@ order by installatedon desc;
 
 
 
-
-/*HOLA ARNAUD
-
 /* 11
 Un listado por año del número de componentes instalados del facility 1
 ordenados descendentemente por año.
