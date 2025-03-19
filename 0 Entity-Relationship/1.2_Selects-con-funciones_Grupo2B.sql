@@ -123,9 +123,6 @@ order by installatedon desc;
 
 
 
-
-/*HOLA ARNAUD
-
 /* 11
 Un listado por año del número de componentes instalados del facility 1
 ordenados descendentemente por año.
@@ -140,12 +137,25 @@ order by "year" desc;
 Nombre del día de instalación y número de componentes del facility 1
 ordenado de lunes a domingo.
 */
-select to_char(installatedon, 'day') as "installation_day", count(*)
-from components
-where spaceid in (select id from spaces where floorid in (select id from floors where facilityid = 1))
-group by to_char(installatedon, 'day')
-order by to_char(installatedon, 'd') asc;
-
+select
+    lower(to_char(c.installatedon, 'day', 'nls_date_language=spanish')) as dia,  -- obtener el nombre del día en minúscula
+    count(c.id) as componentes  -- contar el número de componentes instalados en ese día
+from
+    components c
+where
+    c.facilityid = 1  -- filtrar solo los componentes del facility 1
+group by
+    lower(to_char(c.installatedon, 'day', 'nls_date_language=spanish'))  -- agrupar por nombre del día en minúscula
+order by
+    case lower(to_char(c.installatedon, 'day', 'nls_date_language=spanish'))
+        when 'lunes' then 1
+        when 'martes' then 2
+        when 'miércoles' then 3
+        when 'jueves' then 4
+        when 'viernes' then 5
+        when 'sábado' then 6
+        when 'domingo' then 7
+    end;  
 /* 13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
 del floorid 1 ordenados ascendentemente por el nombre.
