@@ -83,13 +83,26 @@ having
 ¿Cuál es el id y assetidentifier de los componentes
 que están en el espacio llamado CAJERO?
 */
-
+select
+    c.id,
+    c.assetidentifier
+from
+    components c
+    inner join spaces s on c.spaceid = s.id
+where
+    s.name = 'CAJERO';
 
 /*8
 ¿Cuántos componentes
 hay en el espacio llamado CAJERO?
 */
-
+select
+    count(*) as total_componentes
+from
+    components c
+    inner join spaces s on c.spaceid = s.id
+where
+    s.name = 'CAJERO';
 
 /*9
 Mostrar de la tabla spaces: name, id;
@@ -97,19 +110,45 @@ y de la tabla components: spaceid, id, assetidentifier
 de los componentes con id 10000, 20000, 30000
 aunque no tengan datos de espacio.
 */
-
+select
+    spaces.name,
+    spaces.id,
+    components.spaceid,
+    components.id,
+    components.assetidentifier
+from
+    components
+    left join spaces on components.spaceid = spaces.id
+where
+    components.id in (10000, 20000, 30000);
 
 /*
 10
 Listar el nombre de los espacios y su área del facility 1
 */
-
+select
+    spaces.name,
+    spaces.area
+from
+    spaces
+    join facilities on spaces.facilityid = facilities.id
+where
+    facilities.id = 1;
 
 /*11
 ¿Cuál es el número de componentes por facility?
 Mostrar nombre del facility y el número de componentes.
 */
-
+select
+    facilities.name,
+    count(components.id)
+from
+    facilities
+    left join floors on facilities.id = floors.facilityid
+    left join spaces on floors.id = spaces.floorid
+    left join components on spaces.id = components.spaceid
+group by
+    facilities.name;
 
 /*12
 ¿Cuál es la suma de áreas de los espacios por cada facility?
@@ -135,6 +174,23 @@ ordernado por facility.
 --COSTCO	Silla_Silla	40
 --COSTCO	Silla-Corbu_Silla-Corbu	14
 --COSTCO	Silla-Oficina (brazos)_Silla-Oficina (brazos)	188
+
+select
+    facilities.name,
+    component_types.name,
+    count(components.id)
+from
+    facilities
+    join floors on facilities.id = floors.facilityid
+    join spaces on floors.id = spaces.floorid
+    join components on spaces.id = components.spaceid
+    join component_types on components.typeid = component_types.id
+where
+    component_types.name like 'Silla%'
+group by
+    facilities.name, component_types.name
+order by
+    facilities.name;
 
 /*
 14
@@ -277,5 +333,22 @@ Listar los nombres de componentes que están fuera de garantía del facility 1.
 30
 Listar el nombre de los tres espacios con mayor área del facility 1
 */
-
+select 
+    rownum,
+    fila,
+    spacename,
+    spacearea
+from(select
+    rownum fila,
+    spaces.name spacename,
+    spaces.netarea spacearea
+from
+    spaces
+    join floors on floors.id = spaces.floorid
+    join facilities on facilities.id = floors.facilityid
+where
+    facilities.id = 1
+order by
+    spaces.netarea desc)tabla
+    where rownum<4;
 ------------------------------------------------------------------------------------------------
