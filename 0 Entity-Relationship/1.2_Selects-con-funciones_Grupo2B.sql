@@ -86,40 +86,38 @@ where floors.facilityid = 1;
 /* 7
 Mostrar cuántos espacios tienen el texto 'Aula' en el nombre del facility 1.
 */
-select count(name) as "espacios_con_aula"
+select count(*)
 from spaces
-join floors on spaces.floorid = floors.id
-where floors.facilityid = 1
-and lower(spaces.name) like '%aula%';
+where lower(name) like '%aula%'
+and floorid in (select id from floors where facilityid = 1);
 
 /* 8
 Mostrar el porcentaje de componentes que tienen fecha de inicio de garantía del facility 1.
 */
+
 select 
-    round(100.0 * count(case when startwarranty is not null then 1 end) / count(id), 2) as "porcentaje_con_garantía"
+    round((count(case when startwarranty is not null then 1 end) * 100.0) / count(*), 2) as "porcentaje de componentes con garantía"
 from components
-join spaces on components.spaceid = spaces.id
-join floors on spaces.floorid = floors.id
-where floors.facilityid = 1;
+where spaceid in (select id from spaces where floorid in (select id from floors where facilityid = 1));
 
 /* 9
 Listar las cuatro primeras letras del nombre de los espacios sin repetir
 de la planta 1 en orden ascendente.
 */
-select distinct left(name, 4) as "nombre_acortado"
+
+select distinct substr(name, 1, 4) as "first_4_letters"
 from spaces
 where floorid = 1
-order by nombre_acortado;
+order by "first_4_letters" asc;
 
 /* 10
 Número de componentes por fecha de instalación del facility 1
 ordenados descendentemente por la fecha de instalación.
 */
-select installatedon as "fecha", count(id) as "componentes"
+
+select installatedon, count(*)
 from components
-join spaces on components.spaceid = spaces.id
-join floors on spaces.floorid = floors.id
-where floors.facilityid = 1
+where spaceid in (select id from spaces where floorid in (select id from floors where facilityid = 1))
 group by installatedon
 order by installatedon desc;
 
@@ -127,49 +125,45 @@ order by installatedon desc;
 Un listado por año del número de componentes instalados del facility 1
 ordenados descendentemente por año.
 */
-select extract(year from installatedon) as "año", count(id) as "componentes"
+select extract(year from installatedon) as "year", count(*)
 from components
-join spaces on components.spaceid = spaces.id
-join floors on spaces.floorid = floors.id
-where floors.facilityid = 1
+where spaceid in (select id from spaces where floorid in (select id from floors where facilityid = 1))
 group by extract(year from installatedon)
-order by "año" desc;
+order by "year" desc;
 
 /* 12
 Nombre del día de instalación y número de componentes del facility 1
 ordenado de lunes a domingo.
 */
-select to_char(installatedon, 'FMDay') as "día", count(id) as "componentes"
+select to_char(installatedon, 'day') as "installation_day", count(*)
 from components
-join spaces on components.spaceid = spaces.id
-join floors on spaces.floorid = floors.id
-where floors.facilityid = 1
-group by to_char(installatedon, 'FMDay')
-order by to_char(installatedon, 'D');
+where spaceid in (select id from spaces where floorid in (select id from floors where facilityid = 1))
+group by to_char(installatedon, 'day')
+order by to_char(installatedon, 'd') asc;
 
 /* 13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
 del floorid 1 ordenados ascendentemente por el nombre.
 */
-select left(name, 4) as "nombre_acortado", count(id) as "espacios"
+
+select substr(name, 1, 4) as "first_4_letters", count(*)
 from spaces
 where floorid = 1
-group by left(name, 4)
-order by left(name, 4);
+group by substr(name, 1, 4)
+order by "first_4_letters" asc;
 
 /* 14
 Cuántos componentes se instalaron un Jueves en el facilityid 1.
 */
-select count(id) as "componentes_en_jueves"
+select count(*)
 from components
-join spaces on components.spaceid = spaces.id
-join floors on spaces.floorid = floors.id
-where floors.facilityid = 1
-and to_char(installatedon, 'FMDay') = 'Thursday';
+where to_char(installatedon, 'day') = 'thursday'
+and spaceid in (select id from spaces where floorid in (select id from floors where facilityid = 1));
 
 /* 15
 Listar el id de planta concatenado con un guión seguido del id de espacio concatenado con un guión
 y seguido del nombre del espacio. El id del espacio debe tener una longitud de 3 caracteres.
 */
-select concat(floorid, '-', lpad(id::text, 3, '0'), '-', name) as "identificador"
-from spaces;
+select floorid || '-' || lpad(id, 3, '0') || '-' || name as "space_details"
+from spaces
+where floorid in (select id from floors where facilityid = 1);
