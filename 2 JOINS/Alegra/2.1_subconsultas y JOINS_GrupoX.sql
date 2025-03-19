@@ -139,6 +139,19 @@ ordernado por facility.
 --COSTCO	Silla-Corbu_Silla-Corbu	14
 --COSTCO	Silla-Oficina (brazos)_Silla-Oficina (brazos)	188
 
+
+select
+    facilities.name,
+    component_types.name,
+    count(components.id)
+    
+from component_types
+   left join facilities on component_types.facilityid=facilities.id
+   left join components on components.typeid=component_types.id
+where lower(component_types.name) like '%silla%'
+group by facilities.name, component_types.name
+
+order by 1 asc;
 /*
 14
 Listar nombre, código de asset, número de serie, el año de instalación, nombre del espacio,
@@ -280,5 +293,19 @@ Listar los nombres de componentes que están fuera de garantía del facility 1.
 30
 Listar el nombre de los tres espacios con mayor área del facility 1
 */
-
+select
+    rownum,
+    fila,
+    spacename,
+    spacearea
+from(select
+        rownum fila,
+        spaces.name spacename,
+        spaces.netarea spacearea
+    from spaces
+        join floors on spaces.floorid=floors.id
+        join facilities on facilities.id= floors.facilityid
+    where facilities.id=1
+    order by 3 desc) tabla
+where rownum < 4;
 ------------------------------------------------------------------------------------------------
