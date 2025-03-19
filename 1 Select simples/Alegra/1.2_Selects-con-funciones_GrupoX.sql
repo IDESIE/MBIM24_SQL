@@ -25,10 +25,11 @@ del facility 1
 
 select
 INSTALLATEDON,
-    trim(to_char(sysdate, 'Day, dd "de" Month')),
-    to_char(sysdate, ' "de" yyyy. hh24:mm:ss')
+    trim(to_char(INSTALLATEDON, 'Day'))
     
-from components;
+from components
+
+where facilityid=1;
 /* 3
 De los espacios, obtener la suma de áreas, cuál es el mínimo, el máximo y la media de áreas
 del floorid 1. Redondeado a dos dígitos.
@@ -63,11 +64,22 @@ de los espacios del floorid 1
 Solo la parte entera, sin decimales ni redondeo.
 */
 
+SELECT 
+    ROUND(AVG(netarea), 0) Media,
+    ROUND((AVG(netarea) + MIN(netarea)) / 2, 0) MediaBaja,
+    ROUND((AVG(netarea) + MAX(netarea)) / 2, 0) MediaAlta
+FROM spaces
+WHERE floorid = 1;
 /* 6
 Cuántos componentes hay, cuántos tienen fecha inicio de garantia, cuántos tienen espacio, y en cuántos espacios hay componentes
 en el facility 1.
 */
-
+select count(id),
+    count(WARRANTYSTARTON),
+    count(spaceid),
+    count(distinct spaceid)
+from components
+where facilityid=1;
 /* 7
 Mostrar cuántos espacios tienen el texto 'Aula' en el nombre
 del facility 1.
@@ -100,6 +112,11 @@ Pati
 Serv
 */
 
+select
+    distinct name
+from spaces
+where floorid=1
+    and name like '____%';
 /* 10
 Número de componentes por fecha de instalación del facility 1
 ordenados descendentemente por la fecha de instalación
