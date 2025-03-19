@@ -73,7 +73,15 @@ y de la tabla components: spaceid, id, assetidentifier
 de los componentes con id 10000, 20000, 30000
 aunque no tengan datos de espacio.
 */
-
+SELECT 
+    spaces.name, 
+    spaces.id,
+    components.spaceid, 
+    components.id,
+    components.assetidentifier
+FROM components 
+LEFT JOIN spaces ON components.spaceid = spaces.id
+WHERE components.id in (10000,20000,30000);
 
 /*
 10
@@ -85,6 +93,12 @@ Listar el nombre de los espacios y su área del facility 1
 ¿Cuál es el número de componentes por facility?
 Mostrar nombre del facility y el número de componentes.
 */
+SELECT 
+    facilities.name,
+    count(components.id)
+FROM facilities
+left join components on components.facilityid = facilities.id
+group by facilities.name;
 
 
 /*12
@@ -111,6 +125,23 @@ ordernado por facility.
 --COSTCO	Silla_Silla	40
 --COSTCO	Silla-Corbu_Silla-Corbu	14
 --COSTCO	Silla-Oficina (brazos)_Silla-Oficina (brazos)	188
+
+select
+    facilities.name,
+    component_types.name,
+    count(components.id)
+from
+    facilities
+    join floors on facilities.id = floors.facilityid
+    join spaces on floors.id = spaces.floorid
+    join components on spaces.id = components.spaceid
+    join component_types on components.typeid = component_types.id
+where
+    component_types.name like 'Silla%'
+group by
+    facilities.name, component_types.name
+order by
+    facilities.name;
 
 /*
 14
