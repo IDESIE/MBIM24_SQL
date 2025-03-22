@@ -5,7 +5,14 @@
 Listar de la tabla facilities el id y nombre, 
 además de la tabla floors el id, nombre y facilityid
 */
-
+select
+    facilities.id,
+    facilities.name,
+    floors.id,
+    floors.name,
+    floors.facilityid
+from facilities
+    join floors on floors.facilityid=facilities.id;
 /*2
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
 pero sí están en la tabla de espacios.LEFT JOIN SALEN TODOS LOS ESPACIOS INCLSO LOS QU ENO SE RELACIONAN CON COMPONENTES. LO OREDAN PARA VER TODOS LOS NULOS AL INCIO
@@ -23,6 +30,16 @@ Lista de id de tipos de componentes que no están en la tabla de componentes (ty
 pero sí están en la tabla de component_types
 */
 
+select
+    component_types.id
+from component_types
+    left join components on components.typeid= component_types.id
+where
+    components.typeid is null
+and component_types.id is not null;
+
+
+
 
 /*4
 Mostrar de la tabla floors los campos: name, id;
@@ -31,12 +48,34 @@ de los espacios 109, 100, 111
 */
 
 
+select
+    floors.name,
+    floors.id,
+    spaces.floorid,
+    spaces.id,
+    spaces.name
+from floors
+    join spaces on spaces.floorid=floors.id
+where
+    spaces.id in (109,100,111);
+
+
 /*5
 Mostrar de component_types los campos: material, id;
 y de la tabla components los campos: typeid, id, assetidentifier
 de los componentes con id 10000, 20000, 300000
 */
 
+select
+    component_types.material,
+    component_types.id,
+    components.typeid,
+    components.id,
+    components.assetidentifier
+from component_types
+    join components on components.typeid= component_types.id
+where
+    components.id in (10000,20000,30000);
 
 /*6
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
@@ -48,7 +87,7 @@ select
 from spaces
     left join components on components.spaceid=spaces.id
 group by spaces.name
-having count(components.id)=5
+having count(components.id)=5;
 
 /*7
 ¿Cuál es el id y assetidentifier de los componentes
@@ -101,6 +140,14 @@ where components.id=10000 or components.id=20000 or components.id=30000;
 Listar el nombre de los espacios y su área del facility 1
 */
 
+select
+    spaces.name,
+    spaces.netarea
+   
+from spaces
+    join floors on spaces.floorid=floors.id
+    join facilities on floors.facilityid= facilities.id
+where facilities.id=1;
 
 /*11
 ¿Cuál es el número de componentes por facility?
@@ -119,6 +166,14 @@ group by facilities.name;
 Mostrar nombre del facility y la suma de las áreas 
 */
 
+select
+    facilities.name,
+    sum(spaces.netarea)
+   
+from spaces
+    join floors on spaces.floorid=floors.id
+    join facilities on floors.facilityid= facilities.id
+group by facilities.name;
 
 /*13
 ¿Cuántas sillas hay de cada tipo?
