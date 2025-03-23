@@ -96,25 +96,41 @@ order by EXTERNALIDENTIFIER desc;
 Códigos de activo de los componentes del espacio con id 21
 ordenados por código de activo descendentemente.
 */
-
+select id, name, facilityID
+from components
+where id = 21
+order by facilityID desc;
 /* 17
 Las distintas fechas de instalación de los componentes 
 de los espacios con id 10, 12, 16, 19 
 ordenadas descendentemente.
 */
-
+select id, name, installatedon
+from components
+where id = 10
+    or id = 12
+    or id = 16
+    or id = 19
+order by id desc;
 
 /* 18
 Nombre, volumen, de los espacios
 cuyo volumen es mayor a 90 de floorid = 1
 ordenados por volumen descendentemente
 */
-
+select name, volume
+from spaces
+where volume > 90 and floorid =1
+order by volume desc;
 /* 19
 Nombre, volumen de los espacios
 cuyo volumen es mayor a 6 y menor a 9 de la planta con id = 1
 */
-
+select id, name, volume
+from spaces
+where volume < 9 
+    and id =1
+    and volume > 6;
 /* 20
 Nombre, código de activo, número de serie de los componentes
 que no tengan espacio del facility 1
