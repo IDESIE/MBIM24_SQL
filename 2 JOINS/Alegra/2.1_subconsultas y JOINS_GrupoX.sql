@@ -214,12 +214,40 @@ de todos los componentes
 del facility 1
 que estén en un aula y no sean tuberias, muros, techos, suelos.
 */
-
+select
+    components.name,
+    components.assetidentifier,
+    components.serialnumber,
+    components.INSTALLATEDON,
+    spaces.name
+    
+from components
+   left join spaces on components.spaceid=spaces.id
+where components.facilityid=1 and
+    lower(spaces.name) like '%aula%' and
+    lower(components.name) not like '%tuberias%'and
+    lower(components.name) not like '%muros%' and
+    lower(components.name) not like '%techos%' and
+    lower(components.name) not like '%suelos%';
 
 /*
 15
 Nombre, área bruta y volumen de los espacios con mayor área que la media de áreas del facility 1.
 */
+
+select
+    spaces.name,
+    spaces.grossarea,
+    spaces.volume
+    
+from spaces
+   
+where spaces.grossarea> (
+    SELECT AVG(spaces.grossarea) 
+    FROM spaces
+    JOIN floors ON spaces.floorid = floors.id
+    WHERE floors.facilityid = 1
+);
 
 
 /*
