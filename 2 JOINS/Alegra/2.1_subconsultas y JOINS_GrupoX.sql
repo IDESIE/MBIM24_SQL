@@ -254,6 +254,19 @@ where spaces.grossarea> (
 16
 Nombre y fecha de instalación (yyyy-mm-dd) de los componentes del espacio con mayor área del facility 1
 */
+select
+    components.name,
+    to_char(components.INSTALLATEDON, 'yyyy-mm-dd')
+    
+from components
+JOIN spaces ON components.spaceid = spaces.id
+   
+where spaces.grossarea= (
+    SELECT MAX(spaces.grossarea) 
+    FROM spaces
+    JOIN floors ON spaces.floorid = floors.id
+    WHERE floors.facilityid = 1
+);
 
 
 /*
@@ -261,6 +274,16 @@ Nombre y fecha de instalación (yyyy-mm-dd) de los componentes del espacio con m
 Nombre y código de activo  de los componentes cuyo tipo de componente contenga la palabra 'mesa'
 del facility 1
 */
+
+select
+    components.name,
+    components.ASSETIDENTIFIER
+    
+from components
+JOIN component_types on components.typeid=component_types.id
+   
+where component_types.name like '%mesa%' and
+	component_types.facilityid=1;
 
 
 /*
