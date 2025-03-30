@@ -118,16 +118,28 @@ de los espacios con id 10, 12, 16, 19
 ordenadas descendentemente.
 */
 
+select distinct INSTALLATEDON, spaceid
+from components
+where spaceid=10 OR spaceid=12 OR spaceid=16 OR spaceid=19
+order  by INSTALLATEDON desc;
 /* 18
 Nombre, volumen, de los espacios
 cuyo volumen es mayor a 90 de floorid = 1
 ordenados por volumen descendentemente
 */
+select name, volume
+from spaces
+where volume>90 AND floorid=1
+order  by volume desc;
 
 /* 19
 Nombre, volumen de los espacios
 cuyo volumen es mayor a 6 y menor a 9 de la planta con id = 1
 */
+select name, volume
+from spaces
+where volume>6 AND volume<9 AND floorid=1;
+
 
 /* 20
 Nombre, código de activo, número de serie de los componentes
@@ -149,6 +161,9 @@ where facilityid=1 and serialnumber is not null;
 /* 22
 Nombre de los espacios que empiezan por la letra A donde floorid = 1
 */
+select name
+from spaces
+where floorid=1 and name like 'A%';
 
 /* 23
 Lista de espacios que su segunda letra es una 's' donde floorid = 1
@@ -163,6 +178,9 @@ donde el nombre contiene el texto 'con'
 y no tienen vida útil indicada o fecha de garantia 
 */
 
+select name, facilityid, WARRANTYDURATIONUNITID, EXPECTEDLIFE
+from component_types
+where name like '%con%' and facilityid=1 and (WARRANTYDURATIONUNITID is null or EXPECTEDLIFE is null);
 /* 25
 Nombres de espacios y volumen
 pero como volumen una etiqueta que indique 
@@ -174,7 +192,7 @@ select
     volume, 
     case
         when volume<10 then 'BAJO'
-        when volume>1000 then 'BAJO'
+        when volume>1000 then 'ALTO'
         else 'MEDIO'
     end LABELVOLUMEN,
     netarea areaNETA
@@ -184,6 +202,10 @@ Nombre, fecha de instalación, fecha de garantia
 de los componentes del facility 1
 que tienen fecha de garantia
 */
+select name, INSTALLATEDON, WARRANTYSTARTON
+from components
+where facilityid=1 and WARRANTYSTARTON is not null; 
+
 
 /* 27
 Lista de nombres de espacio que su id no es 4, 9, ni 19
@@ -209,11 +231,17 @@ Lista de los tipos de componentes que tienen duracion de la garantia de las part
 del facility 1
 */
 
+select name, WARRANTYDURATIONUNITID
+from component_types
+where facilityid=1 and WARRANTYDURATIONUNITID is not null;
 /* 30
 Lista de los tipos de componentes que no tiene el coste de repuesto
 del facility 1
 */
 
+select name, facilityid, REPLACEMENTCOST
+from component_types
+where facilityid=1 and REPLACEMENTCOST is null;
 /* 31
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
