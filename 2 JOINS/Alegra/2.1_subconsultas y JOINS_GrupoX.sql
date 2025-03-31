@@ -304,6 +304,13 @@ where component_types.name like '%mesa%' and
 Nombre del componente, espacio y planta de los componentes
 de los espacios que sean Aula del facility 1
 */
+select c.name as "nombre del componente", s.name as "nombre del espacio", fl.name as "nombre de la planta"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+and lower(s.name) like '%aula%';
+
 
 
 /*
@@ -311,6 +318,12 @@ de los espacios que sean Aula del facility 1
 Número de componentes y número de espacios por planta (nombre) del facility 1. 
 Todas las plantas.
 */
+select fl.name as "nombre de la planta", count(c.id) as "número de componentes", count(distinct s.id) as "número de espacios"
+from floors fl
+join spaces s on fl.id = s.floorid
+join components c on s.id = c.spaceid
+where fl.facilityid = 1
+group by fl.name;
 
 
 /*
@@ -326,7 +339,15 @@ Componentes    Tipo   Espacio
 1   Mesa-profesor           Aula 3
 21  Mesa-cristal-redonda    Aula 12
 */
-
+select count(c.id) as "número de componentes", ct.name as "tipo de componente", s.name as "nombre del espacio"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+join component_types ct on c.typeid = ct.id
+where fl.facilityid = 1
+and lower(ct.name) like '%mesa%'
+group by s.name, ct.name
+order by s.name asc, count(c.id) desc;
 
 /*
 21
@@ -343,7 +364,20 @@ Aula 1  BAJO
 Aula 2  BAJO
 Aula 3  MEDIO
 */
-
+select s.name ,
+       case
+           when count(c.id) < 6 then 'bajo'
+           when count(c.id) > 15 then 'alto'
+           else 'medio'
+       end as "sillas"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+join component_types ct on c.typeid = ct.id
+where fl.facilityid = 1
+and lower(ct.name) like '%silla%'
+group by s.name
+order by s.name asc;
 
 
 /*
@@ -371,7 +405,15 @@ Nombre y área del espacio que mayor área bruta tiene del facility 1.
 Número de componentes instalados entre el 1 de mayo de 2010 y 31 de agosto de 2010
 y que sean grifos, lavabos del facility 1
 */
-
+select count(c.id) as "número de componentes"
+    from components c
+            join spaces s on c.spaceid = s.id
+            join floors fl on s.floorid = fl.id
+            join component_types ct on c.typeid = ct.id
+            where fl.facilityid = 1
+            and lower(ct.name) in ('grifo', 'lavabo')
+            and c.installatedon between to_date('2010-05-01', 'yyyy-mm-dd') 
+            and to_date('2010-08-31', 'yyyy-mm-dd');
 
 /*
 25
@@ -385,13 +427,42 @@ Componentes 70
 Sillas 16
 Mesas 3
 */
-
+select 'componentes' as "etiqueta", count(c.id) as "número"
+from components c
+join spaces s on c.spaceid = s.id
+where lower(s.name) = 'aula 03'
+and s.floorid in (select id from floors where facilityid = 1)
+union
+select 'sillas' as "etiqueta", count(c.id) as "número"
+from components c
+join spaces s on c.spaceid = s.id
+join component_types ct on c.typeid = ct.id
+where lower(s.name) = 'aula 03'
+and lower(ct.name) like '%silla%'
+and s.floorid in (select id from floors where facilityid = 1)
+union
+select 'mesas' as "etiqueta", count(c.id) as "número"
+from components c
+join spaces s on c.spaceid = s.id
+join component_types ct on c.typeid = ct.id
+where lower(s.name) = 'aula 03'
+and lower(ct.name) like '%mesa%'
+and s.floorid in (select id from floors where facilityid = 1);
 
 /*
 26
 Nombre del espacio, y número de grifos del espacio con más grifos del facility 1.
 */
-
+select s.name as "nombre del espacio", count(c.id) as "número de grifos"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+join component_types ct on c.typeid = ct.id
+where fl.facilityid = 1
+and lower(ct.name) = 'grifo'
+group by s.name
+order by count(c.id) desc
+limit 1;
 
 /*
 27
