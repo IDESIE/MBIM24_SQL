@@ -5,8 +5,6 @@
 Describir la tabla floors
 */
 desc floors;
-
-/* 2
 Describir la tabla spaces
 */
 desc spaces;
