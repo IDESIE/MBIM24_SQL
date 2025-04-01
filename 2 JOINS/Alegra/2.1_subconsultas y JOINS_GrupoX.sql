@@ -392,12 +392,25 @@ Aula    18
 Aseo    4
 Hall    2
 */
+select left(s.name, 4) as "Espacio", count(*) as "Ocurrencias"
+from spaces s
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+group by left(s.name, 4)
+having count(*) > 1
+order by count(*) desc;
 
 
 /*
 23
 Nombre y área del espacio que mayor área bruta tiene del facility 1.
 */
+select s.name as "nombre del espacio", s.grossarea as "área bruta"
+from spaces s
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+order by s.grossarea desc
+limit 1;
 
 
 /*
@@ -468,16 +481,42 @@ limit 1;
 27
 Cuál es el mes en el que más componentes se instalaron del facility 1.
 */
+select date_part('month', c.installationdate) as "mes", count(*) as "cantidad de instalaciones"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+group by date_part('month', c.installationdate)
+order by count(*) desc
+limit 1;
 
 
-/* 28
+/* 
+28
 Nombre del día en el que más componentes se instalaron del facility 1.
 Ejemplo: Jueves
 */
+select to_char(c.installationdate, 'Day') as "día de la semana", count(*) as "cantidad de instalaciones"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+group by to_char(c.installationdate, 'Day')
+order by count(*) desc
+limit 1;
 
-/*29
+
+/*
+29
 Listar los nombres de componentes que están fuera de garantía del facility 1.
 */
+select c.name as "nombre del componente"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+and c.warrantyenddate < current_date;
+
 
 /*
 30
