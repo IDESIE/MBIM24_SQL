@@ -5,6 +5,9 @@
 Listar de la tabla facilities el id y nombre, 
 además de la tabla floors el id, nombre y facilityid
 */
+select f.id as "facility id", f.name as "facility name", fl.id as "floor id", fl.name as "floor name", fl.facilityid
+from facilities f
+join floors fl on f.id = fl.facilityid;
 
 /*2
 Lista de id de espacios que no están en la tabla de componentes (spaceid)
@@ -29,14 +32,20 @@ Mostrar de la tabla floors los campos: name, id;
 y de la tabla spaces los campos: floorid, id, name
 de los espacios 109, 100, 111
 */
-
+select fl.name as "floor name", fl.id as "floor id", s.floorid, s.id as "space id", s.name as "space name"
+from floors fl
+join spaces s on fl.id = s.floorid
+where s.id in (109, 100, 111);
 
 /*5
 Mostrar de component_types los campos: material, id;
 y de la tabla components los campos: typeid, id, assetidentifier
 de los componentes con id 10000, 20000, 300000
 */
-
+select ct.material, ct.id as "component type id", c.typeid, c.id as "component id", c.assetidentifier
+from component_types ct
+join components c on ct.id = c.typeid
+where c.id in (10000, 20000, 300000);
 
 /*6
 ¿Cuál es el nombre de los espacios que tienen cinco componentes?
@@ -65,6 +74,10 @@ where upper(spaces.name) = 'CAJERO';
 ¿Cuántos componentes
 hay en el espacio llamado CAJERO?
 */
+select count(c.id) as "component count"
+from components c
+join spaces s on c.spaceid = s.id
+where lower(s.name) = 'cajero';
 
 
 /*9
@@ -87,7 +100,10 @@ WHERE components.id in (10000,20000,30000);
 10
 Listar el nombre de los espacios y su área del facility 1
 */
-
+select s.name as "space name", s.grossarea as "area"
+from spaces s
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1;
 
 /*11
 ¿Cuál es el número de componentes por facility?
@@ -105,7 +121,11 @@ group by facilities.name;
 ¿Cuál es la suma de áreas de los espacios por cada facility?
 Mostrar nombre del facility y la suma de las áreas 
 */
-
+select f.name as "facility name", sum(s.grossarea) as "total area"
+from facilities f
+join floors fl on f.id = fl.facilityid
+join spaces s on fl.id = s.floorid
+group by f.name;
 
 /*13
 ¿Cuántas sillas hay de cada tipo?
@@ -150,7 +170,13 @@ de todos los componentes
 del facility 1
 que estén en un aula y no sean tuberias, muros, techos, suelos.
 */
-
+select c.name as "component name", c.assetidentifier, c.serialnumber, extract(year from c.installatedon) as "year of installation", s.name as "space name"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+and lower(s.name) like '%aula%'
+and lower(c.name) not in ('tuberia', 'muro', 'techo', 'suelo');
 
 /*
 15
@@ -162,28 +188,52 @@ Nombre, área bruta y volumen de los espacios con mayor área que la media de á
 16
 Nombre y fecha de instalación (yyyy-mm-dd) de los componentes del espacio con mayor área del facility 1
 */
-
+select c.name as "nombre del componente", to_char(c.installatedon, 'yyyy-mm-dd') as "fecha de instalación"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+and s.grossarea = (
+    select max(grossarea)
+    from spaces
+    where floorid = s.floorid
 
 /*
 17
 Nombre y código de activo  de los componentes cuyo tipo de componente contenga la palabra 'mesa'
 del facility 1
 */
-
+select c.name as "nombre del componente", c.assetidentifier as "código de activo"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+join component_types ct on c.typeid = ct.id
+where fl.facilityid = 1
+and lower(ct.name) like '%mesa%';
 
 /*
 18
 Nombre del componente, espacio y planta de los componentes
 de los espacios que sean Aula del facility 1
 */
-
+select c.name as "nombre del componente", s.name as "nombre del espacio", fl.name as "nombre de la planta"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+where fl.facilityid = 1
+and lower(s.name) like '%aula%';
 
 /*
 19
 Número de componentes y número de espacios por planta (nombre) del facility 1. 
 Todas las plantas.
 */
-
+select fl.name as "nombre de la planta", count(c.id) as "número de componentes", count(distinct s.id) as "número de espacios"
+from floors fl
+join spaces s on fl.id = s.floorid
+join components c on s.id = c.spaceid
+where fl.facilityid = 1
+group by fl.name;
 
 /*
 20
@@ -198,7 +248,15 @@ Componentes    Tipo   Espacio
 1   Mesa-profesor           Aula 3
 21  Mesa-cristal-redonda    Aula 12
 */
-
+select count(c.id) as "número de componentes", ct.name as "tipo de componente", s.name as "nombre del espacio"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+join component_types ct on c.typeid = ct.id
+where fl.facilityid = 1
+and lower(ct.name) like '%mesa%'
+group by s.name, ct.name
+order by s.name asc, count(c.id) desc;
 
 /*
 21
@@ -215,7 +273,20 @@ Aula 1  BAJO
 Aula 2  BAJO
 Aula 3  MEDIO
 */
-
+select s.name ,
+       case
+           when count(c.id) < 6 then 'bajo'
+           when count(c.id) > 15 then 'alto'
+           else 'medio'
+       end as "sillas"
+from components c
+join spaces s on c.spaceid = s.id
+join floors fl on s.floorid = fl.id
+join component_types ct on c.typeid = ct.id
+where fl.facilityid = 1
+and lower(ct.name) like '%silla%'
+group by s.name
+order by s.name asc;
 
 
 /*
