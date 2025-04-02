@@ -13,25 +13,42 @@ desc spaces
 Datos de la tabla components
 */
 select *
+<<<<<<< Updated upstream
 from components;
+=======
+from components
+>>>>>>> Stashed changes
 /* 4
 Datos de la tabla component_types
 */
 select *
+<<<<<<< Updated upstream
 from component_types;
+=======
+from component_types
+>>>>>>> Stashed changes
 /* 5
 Id, nombre de los facilities
 */
 select id,name
+<<<<<<< Updated upstream
 from facilities;
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
 select name, elevation,facilityid
+=======
+from facilities
+/* 6
+Nombre, elevación e id del facility de las plantas
+*/
+select name,elevation,facilityid
+>>>>>>> Stashed changes
 from floors;
 /* 7
 Nombre, area bruta, volumen de los espacios
 */
+<<<<<<< Updated upstream
 select name, netarea,volume
 from spaces;
 /* 8
@@ -41,6 +58,14 @@ select
     name, 
     expectedlife,  
     facilityid
+=======
+select name,netarea,volume
+from spaces
+/* 8
+Nombre, vida útil de los tipos de componentes del facility 1
+*/
+select name,expectedlife,facilityid
+>>>>>>> Stashed changes
 from component_types
 where facilityid = 1;
 /* 9
@@ -48,6 +73,7 @@ Nombre de los espacios de la Planta 1 del facility 1
 */
 /*Previamente se consulta cuál es el floorid
 listando los */
+<<<<<<< Updated upstream
 select 
     id, name
 from floors
@@ -57,6 +83,28 @@ where
 select name, floorid
 from spaces
 where floorid= 1;
+=======
+select id,name
+from floors
+where 
+    facilityid = 1 
+    and name = 'Planta +1';
+
+select name, floorid
+from spaces
+where floorid = 1;
+
+select id,name
+from floors
+where 
+    facilityid = 1 
+    and name like '%Planta%';
+
+select name, floorid
+from spaces
+where floorid = 1;
+
+>>>>>>> Stashed changes
 /* 10
 Nombre, número de modelo del tipo de componente con id = 60
 */
@@ -71,16 +119,24 @@ Nombre y fecha de instalación de los componentes del espacio 60 ordenados desce
 select name, installatedon
 from components
 where spaceid = 60
+<<<<<<< Updated upstream
 order  by installatedon desc;
 
+=======
+order by installatedon desc;
+>>>>>>> Stashed changes
 /* 12
 Listar las distintas fechas de instalación de los componentes del facility 1 ordenados descendentemente.
 */
 select distinct installatedon
 from components
 where facilityid = 1
+<<<<<<< Updated upstream
 order  by installatedon desc;
 
+=======
+order by installatedon desc;
+>>>>>>> Stashed changes
 /* 13
 Listar los distintos GUIDs de los componentes del facility 1 ordenados ascendentemente por fecha de garantía.
 */
