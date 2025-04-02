@@ -1,4 +1,10 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+------------------------------------------------------------------------------------------------
+--SELECTS SIMPLES
+------------------------------------------------------------------------------------------------
+>>>>>>> Stashed changes
 =======
 ------------------------------------------------------------------------------------------------
 --SELECTS SIMPLES
@@ -17,7 +23,15 @@ Datos de la tabla components
 */
 select *
 <<<<<<< Updated upstream
+<<<<<<<< Updated upstream:1 Select simples/Alegra/1.1_Selects-simples_Grupo1A.sql
+<<<<<<< Updated upstream
 from components;
+=======
+from components
+>>>>>>> Stashed changes
+========
+from components
+>>>>>>>> Stashed changes:1 Select simples/Alegra/1.1_Selects-simples_GrupoX.sql
 =======
 from components
 >>>>>>> Stashed changes
@@ -26,7 +40,15 @@ Datos de la tabla component_types
 */
 select *
 <<<<<<< Updated upstream
+<<<<<<<< Updated upstream:1 Select simples/Alegra/1.1_Selects-simples_Grupo1A.sql
+<<<<<<< Updated upstream
 from component_types;
+=======
+from component_types
+>>>>>>> Stashed changes
+========
+from component_types
+>>>>>>>> Stashed changes:1 Select simples/Alegra/1.1_Selects-simples_GrupoX.sql
 =======
 from component_types
 >>>>>>> Stashed changes
@@ -35,22 +57,38 @@ Id, nombre de los facilities
 */
 select id,name
 <<<<<<< Updated upstream
+<<<<<<<< Updated upstream:1 Select simples/Alegra/1.1_Selects-simples_Grupo1A.sql
+<<<<<<< Updated upstream
 from facilities;
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
 select name, elevation,facilityid
 =======
+=======
+>>>>>>> Stashed changes
 from facilities
 /* 6
 Nombre, elevación e id del facility de las plantas
 */
 select name,elevation,facilityid
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+========
+from facilities
+/* 6
+Nombre, elevación e id del facility de las plantas
+*/
+select name,elevation,facilityid
+>>>>>>>> Stashed changes:1 Select simples/Alegra/1.1_Selects-simples_GrupoX.sql
+=======
 >>>>>>> Stashed changes
 from floors;
 /* 7
 Nombre, area bruta, volumen de los espacios
 */
+<<<<<<< Updated upstream
+<<<<<<<< Updated upstream:1 Select simples/Alegra/1.1_Selects-simples_Grupo1A.sql
 <<<<<<< Updated upstream
 select name, netarea,volume
 from spaces;
@@ -62,12 +100,25 @@ select
     expectedlife,  
     facilityid
 =======
+=======
+>>>>>>> Stashed changes
 select name,netarea,volume
 from spaces
 /* 8
 Nombre, vida útil de los tipos de componentes del facility 1
 */
 select name,expectedlife,facilityid
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+========
+select name,netarea,volume
+from spaces
+/* 8
+Nombre, vida útil de los tipos de componentes del facility 1
+*/
+select name,expectedlife,facilityid
+>>>>>>>> Stashed changes:1 Select simples/Alegra/1.1_Selects-simples_GrupoX.sql
+=======
 >>>>>>> Stashed changes
 from component_types
 where facilityid = 1;
@@ -76,6 +127,8 @@ Nombre de los espacios de la Planta 1 del facility 1
 */
 /*Previamente se consulta cuál es el floorid
 listando los */
+<<<<<<< Updated upstream
+<<<<<<<< Updated upstream:1 Select simples/Alegra/1.1_Selects-simples_Grupo1A.sql
 <<<<<<< Updated upstream
 select 
     id, name
@@ -93,6 +146,10 @@ select
     name, 
     modelnumber
 =======
+========
+>>>>>>>> Stashed changes:1 Select simples/Alegra/1.1_Selects-simples_GrupoX.sql
+=======
+>>>>>>> Stashed changes
 select id,name
 from floors
 where 
@@ -117,6 +174,9 @@ where floorid = 1;
 Nombre, número de modelo del tipo de componente con id = 60
 */
 select name, modelnumber
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 from component_types
 where id = 60;
@@ -127,8 +187,16 @@ select name, installatedon
 from components
 where spaceid = 60
 <<<<<<< Updated upstream
+<<<<<<<< Updated upstream:1 Select simples/Alegra/1.1_Selects-simples_Grupo1A.sql
+<<<<<<< Updated upstream
 order  by installatedon desc;
 
+=======
+order by installatedon desc;
+>>>>>>> Stashed changes
+========
+order by installatedon desc;
+>>>>>>>> Stashed changes:1 Select simples/Alegra/1.1_Selects-simples_GrupoX.sql
 =======
 order by installatedon desc;
 >>>>>>> Stashed changes
@@ -139,8 +207,13 @@ select distinct installatedon
 from components
 where facilityid = 1
 <<<<<<< Updated upstream
+<<<<<<<< Updated upstream:1 Select simples/Alegra/1.1_Selects-simples_Grupo1A.sql
+<<<<<<< Updated upstream
 order  by installatedon desc;
 
+========
+order by installatedon desc;
+>>>>>>>> Stashed changes:1 Select simples/Alegra/1.1_Selects-simples_GrupoX.sql
 /* 13
 Listar los distintos GUIDs de los componentes del facility 1 ordenados ascendentemente por fecha de garantía.
 */
@@ -149,16 +222,22 @@ from components
 where facilityid = 1
 order  by warrantystarton asc;
 =======
+=======
+>>>>>>> Stashed changes
 order by installatedon desc;
 /* 13
 Listar los distintos GUIDs de los componentes del facility 1 ordenados ascendentemente por fecha de garantía.
 */
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 /* 14
 Id, código de activo, GUID, número de serie y nombre de los componentes cuyo spaceid está entre 10 y 27 inclusive
 ordenados por id de espacio descendentemente.
 */
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 select id, assetidentifier, externalidentifier, serialnumber, name
 from components
@@ -167,10 +246,14 @@ order  by spaceid desc;
 =======
 
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> Stashed changes
 /* 15
 Id, código de activo, GUID, número de serie y nombre de los componentes del facility 1 
 ordenados por código de activo descendentemente.
 */
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 select id, assetidentifier, externalidentifier, serialnumber, name
 from components
@@ -179,16 +262,22 @@ order  by assetidentifier desc;
 =======
 
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> Stashed changes
 /* 16
 Códigos de activo de los componentes del espacio con id 21
 ordenados por código de activo descendentemente.
 */
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 select assetidentifier
 from components
 where spaceid=21
 order  by assetidentifier desc;
 =======
+=======
+>>>>>>> Stashed changes
 
 /* 17
 Las distintas fechas de instalación de los componentes 
@@ -271,4 +360,7 @@ del facility 1
 
 --
 ------------------------------------------------------------------------------------------------
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
