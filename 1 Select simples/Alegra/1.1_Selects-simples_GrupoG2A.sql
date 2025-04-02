@@ -184,6 +184,12 @@ Lista de tipos de componente del facility 1
 donde el nombre contiene el texto 'con'
 y no tienen vida útil indicada o fecha de garantia 
 */
+SELECT DISTINCT tipo_componente  
+FROM componentes  
+WHERE facility_id = 1  
+AND nombre LIKE '%con%'  
+AND (vida_util IS NULL OR vida_util = '')  
+AND (fecha_garantia IS NULL OR fecha_garantia = '');
 
 /* 25
 Nombres de espacios y volumen
