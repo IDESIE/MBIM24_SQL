@@ -90,7 +90,10 @@ order by INSTALLATEDON desc;
 /* 13
 Listar los distintos GUIDs de los componentes del facility 1 ordenados ascendentemente por fecha de garantía.
 */
-
+SELECT DISTINCT GUID
+FROM Componentes
+WHERE FacilityID = 1
+ORDER BY FechaGarantia ASC;
 
 /* 14
 Id, código de activo, GUID, número de serie y nombre de los componentes cuyo spaceid está entre 10 y 27 inclusive
@@ -124,7 +127,10 @@ Las distintas fechas de instalación de los componentes
 de los espacios con id 10, 12, 16, 19 
 ordenadas descendentemente.
 */
-
+SELECT DISTINCT FechaInstalacion
+FROM Componentes
+WHERE SpaceID IN (10, 12, 16, 19)
+ORDER BY FechaInstalacion DESC;
 /* 18
 Nombre, volumen, de los espacios
 cuyo volumen es mayor a 90 de floorid = 1
@@ -177,7 +183,7 @@ from spaces
 where floorid=1 and name like '_s%';
 /*Aqui debemos cuidar mayusculas y minusculas de la "s", sino, podríamos usar
 la función upper: upper(name) like '_s%' --> asi ya si no sabes si estan en mayus
-o minus, ya agarras todo porque pasas todo a mayus con la funcion upper */
+o minus, ya agarras todo porque pasas todo a mayus con la funcion upper 
 
 /* 24
 Lista de tipos de componente del facility 1 
@@ -197,6 +203,7 @@ pero como volumen una etiqueta que indique
 'BAJO' si es menor a 10, 'ALTO' si es mayor a 1000
 y 'MEDIO' si está entre medias
 */
+
 Select name noml,
 volume,
 case 
@@ -213,6 +220,10 @@ Nombre, fecha de instalación, fecha de garantia
 de los componentes del facility 1
 que tienen fecha de garantia
 */
+SELECT Nombre, FechaInstalacion, FechaGarantia
+FROM Componentes
+WHERE FacilityID = 1
+  AND FechaGarantia IS NOT NULL;
 
 /* 27
 Lista de nombres de espacio que su id no es 4, 9, ni 19
@@ -234,7 +245,10 @@ where floorid=1
 and lower(name) not like '%aula%';
 /*para prevenir que exista alguna palabra que antes de "aula"
 tenga otra palabra podriamos poner: name not like '%Aula%' */
-
+SELECT Nombre
+FROM Espacios
+WHERE FloorID = 1
+  AND Nombre != 'Aula';
 /* 29
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
 del facility 1
