@@ -72,7 +72,7 @@ NOTA: Algunos ejercicios provocan errores que deben probar (para ver el error) y
 
 
 
-create table facilities(
+create table cb_facilities(
     id          number,
     guid        varchar2(4000),
     name        varchar2(4000) not null,
@@ -84,7 +84,7 @@ create table facilities(
     constraint uq_facilities_guid unique(guid)
 );
 
-create table floors(
+create table cb_floors(
     id              number,
     guid            varchar2(4000),
     name            varchar2(4000) not null,
@@ -97,7 +97,7 @@ create table floors(
     constraint uq_floors_guid unique(guid)
 );
 
-create table spaces(
+create table cb_spaces(
     id              number,
     guid            varchar2(4000),
     name            varchar2(4000) not null,
@@ -111,7 +111,7 @@ create table spaces(
     constraint uq_spaces_guid unique(guid)
 );
 
-create table components(
+create table cb_components(
     id              number,
     guid            varchar2(4000),
     name            varchar2(4000) not null,
@@ -125,7 +125,7 @@ create table components(
     constraint uq_components_guid unique(guid)
 );
 
-create table types(
+create table cb_types(
     id              number,
     guid            varchar2(4000),
     name            varchar2(4000) not null,
@@ -138,21 +138,21 @@ create table types(
     constraint uq_types_guid unique(guid)
 );
 
-alter table floors ADD
+alter table cb_floors ADD
     constraint fk_floors_facility foreign key (facilityId)
-        references facilities(id);
+        references cb_facilities(id);
 
-alter table spaces add
+alter table cb_spaces add
     constraint fk_spaces_floor foreign key (floorId)
-        references floors (id);
+        references cb_floors (id);
 
-alter table components ADD(
+alter table cb_components ADD(
     constraint fk_components_space foreign key (spaceId)
-        references spaces(id),
+        references cb_spaces(id),
     constraint fk_components_type foreign key (typeId)
-        references types(id)
+        references cb_types(id)
 );
 
-alter table types add(
+alter table cb_types add(
     constraint ck_types_warrantyYears check(warrantyYears > 0)
 );
