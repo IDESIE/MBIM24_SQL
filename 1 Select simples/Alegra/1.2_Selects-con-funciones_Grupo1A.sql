@@ -113,10 +113,10 @@ Serv
 */
 
 select
-    distinct name
+    distinct substr(name,1,4)
 from spaces
 where floorid=1
-    and name like '____%';
+order by 1 asc;
 /* 10
 Número de componentes por fecha de instalación del facility 1
 ordenados descendentemente por la fecha de instalación
@@ -127,6 +127,13 @@ Fecha   Componentes
 2021-03-03 232
 */
 
+select
+    INSTALLATEDON,
+    count (id)
+from components
+where facilityid=1
+group by INSTALLATEDON
+order by 1 desc;
 /* 11
 Un listado por año del número de componentes instalados del facility 1
 ordenados descendentemente por año.
@@ -137,6 +144,13 @@ Año Componentes
 2020 2938
 */
 
+select
+    trim(to_char(INSTALLATEDON, 'yyyy')),
+    count (id)
+from components
+where facilityid=1
+group by  trim(to_char(INSTALLATEDON, 'yyyy'))
+order by 1 desc;
 /* 12
 Nombre del día de instalación y número de componentes del facility 1.
 ordenado de lunes a domingo AGRUPO POR UN CAMPO QUE ES EL DIA DE LA SEMANA. UNO LLEVA FUNCION DE GRUPO Y OTRO QU ENO, HAY QUE AGRUPAR POR LOS CAMPOS QUE NO LLEVAN FUNCION DE GRUPO. LA D ES EL DIA DE LA SMEANA EN NUMERO DE 1 A 7 (DE LUNES A DOMINGO)
@@ -161,13 +175,21 @@ group by to_char(installatedon, 'Day'),
 order by to_char(installatedon, 'd');
 /*13
 Mostrar en base a los cuatro primeros caracteres del nombre cuántos espacios hay
-del floorid 1 ordenados ascendentemente por el nombre.
+del floorid 1 ordenados ascendentemente por el nombre.  
 Ejemplo.
 Aula 23
 Aseo 12
 Pasi 4
 */
 
+
+select
+    substr(name,1,4),
+    count(id)
+from spaces
+where floorid=1
+group by substr(name,1,4)
+order by 1 asc;
 /*14
 Cuántos componentes de instalaron un Jueves
 en el facilityid 1
@@ -181,8 +203,15 @@ where facilityid=1
 Listar el id de planta concatenado con un guión
 seguido del id de espacio concatenado con un guión
 y seguido del nombre del espacio.
-el id del espacio debe tener una longitud de 3 caracteres
+el id del espacio debe tener una longitud de 3 caracteres 
 Ej. 3-004-Nombre
 */
- 
+
+
+SELECT 
+    floorid || '-' || TO_CHAR(id, '000') || '-' || name 
+FROM spaces;
+
+
+
 ------------------------------------------------------------------------------------------------
