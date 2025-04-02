@@ -190,6 +190,7 @@ Lista de tipos de componente del facility 1
 donde el nombre contiene el texto 'con'
 y no tienen vida útil indicada o fecha de garantia 
 */
+
 SELECT DISTINCT tipo_componente  
 FROM componentes  
 WHERE facility_id = 1  
@@ -253,12 +254,18 @@ WHERE FloorID = 1
 Lista de los tipos de componentes que tienen duracion de la garantia de las partes
 del facility 1
 */
-
+SELECT DISTINCT TipoComponente
+FROM Componentes
+WHERE FacilityID = 1
+  AND DuracionGarantia IS NOT NULL;
 /* 30
 Lista de los tipos de componentes que no tiene el coste de repuesto
 del facility 1
 */
-
+SELECT DISTINCT TipoComponente
+FROM Componentes
+WHERE FacilityID = 1
+  AND CosteRepuesto IS NULL;
 /* 31
 Lista de los tipos de componentes que tienen en el nombre un guión bajo
 del facility 1
