@@ -183,7 +183,7 @@ from spaces
 where floorid=1 and name like '_s%';
 /*Aqui debemos cuidar mayusculas y minusculas de la "s", sino, podríamos usar
 la función upper: upper(name) like '_s%' --> asi ya si no sabes si estan en mayus
-o minus, ya agarras todo porque pasas todo a mayus con la funcion upper 
+o minus, ya agarras todo porque pasas todo a mayus con la funcion upper */
 
 /* 24
 Lista de tipos de componente del facility 1 
